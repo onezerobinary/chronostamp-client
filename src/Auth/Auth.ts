@@ -17,7 +17,7 @@ class Auth {
   auth0 = new auth0.WebAuth(ChronoStampAuthConfig);
 
   isAuthenticated(): boolean {
-    return new Date().getTime() > this.expiresAt;
+    return new Date().getTime() < this.expiresAt;
   }
 
   signIn() {
@@ -49,11 +49,10 @@ class Auth {
     if (authResult.idToken && authResult.idTokenPayload) {
       this.idToken = authResult.idToken;
       this.profile = authResult.idTokenPayload;
-
-      console.log(authResult.idToken);
-
       // set the time that the id token will expire at
-      this.expiresAt = authResult.idTokenPayload.expire * 1000;
+      this.expiresAt = authResult.idTokenPayload.exp * 1000;
+
+      console.log(this.expiresAt);
     }
   }
 

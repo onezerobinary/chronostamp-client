@@ -6,8 +6,6 @@ const Callback: React.FC = (props: any) => {
   useEffect(() => {
     async function auth() {
       await Auth0.handleAthentication();
-      //TODO: update props
-      console.log(props);
       props.history.replace('/protected');
     }
 

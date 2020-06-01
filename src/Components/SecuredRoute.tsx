@@ -16,7 +16,7 @@ function SecuredRoute(props: any) {
           Auth0.signIn();
           return <div></div>;
         }
-        return Component;
+        return <Component />;
       }}
     />
   );

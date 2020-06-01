@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import logo from './logo.svg';
 import './App.css';
 
-import auth0Client from '../src/Auth/Auth';
+import auth0Client from './Auth/Auth';
 import { Route } from 'react-router-dom';
 
 import Public from '../src/Components/Public';
@@ -30,6 +30,7 @@ const App: React.FC<any> = (initialProps: any) => {
           console.log(err.error);
         }
       }
+      setCheckingSession(false);
     }
 
     auth();
