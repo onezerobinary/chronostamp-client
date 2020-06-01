@@ -1,5 +1,5 @@
 import auth0 from 'auth0-js';
-import { ChronoStampAuthConfig, CALLBACK } from './config';
+import { ChronoStampAuthConfig, HOME } from './config';
 
 export type AuthConfig = {
   domain: string;
@@ -49,6 +49,9 @@ class Auth {
     if (authResult.idToken && authResult.idTokenPayload) {
       this.idToken = authResult.idToken;
       this.profile = authResult.idTokenPayload;
+
+      console.log(authResult.idToken);
+
       // set the time that the id token will expire at
       this.expiresAt = authResult.idTokenPayload.expire * 1000;
     }
@@ -56,7 +59,7 @@ class Auth {
 
   signOut() {
     this.auth0.logout({
-      returnTo: CALLBACK,
+      returnTo: HOME,
       clientID: ChronoStampAuthConfig.clientID,
     });
   }
