@@ -51,8 +51,6 @@ class Auth {
       this.profile = authResult.idTokenPayload;
       // set the time that the id token will expire at
       this.expiresAt = authResult.idTokenPayload.exp * 1000;
-
-      console.log(this.expiresAt);
     }
   }
 

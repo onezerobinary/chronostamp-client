@@ -4,7 +4,7 @@ import Auth0 from '../Auth/Auth';
 const Public: React.FC = () => {
   return (
     <div>
-      <button onClick={() => Auth0.signIn()}> Log In </button>
+      <button onClick={() => Auth0.signIn()}>Log In</button>
     </div>
   );
 };

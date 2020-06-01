@@ -4,7 +4,7 @@ import Auth0 from '../Auth/Auth';
 const Protected: React.FC = () => {
   return (
     <div>
-      Hi there
+      <p>Hi there!</p>
       <button onClick={() => Auth0.signOut()}>Log Out</button>
     </div>
   );
