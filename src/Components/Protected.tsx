@@ -1,68 +1,66 @@
 import React, { useEffect, useState } from 'react';
 import Auth0 from '../Auth/Auth';
 
-import { loadStripe } from '@stripe/stripe-js';
-import { STRIPE_PUBLISHABLE_KEY } from '../Auth/config';
-import { Elements, CardElement } from '@stripe/react-stripe-js';
+import { CardElement, ElementsConsumer } from '@stripe/react-stripe-js';
 
-const Protected: React.FC = () => {
-  console.log(Auth0.profile);
+interface IAppProps {
+  stripe: any;
+  elements: any;
+}
 
-  const [stripeP, setStripeP] = useState({}) || null;
+const Protected: React.FC<IAppProps> = (props: IAppProps) => {
+  // console.log(Auth0.profile);
 
   let fullName = Auth0.profile.name;
   let nickname = Auth0.profile.nickname;
   let picture = Auth0.profile.picture;
   let sub = Auth0.profile.sub;
 
-  const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
-
   // load the promise
-  useEffect(() => {
-    async function stripe() {
-      let stripe = await loadStripe(STRIPE_PUBLISHABLE_KEY);
-      if (stripe !== null) {
-        setStripeP(stripe);
-
-        console.log(stripeP);
-      }
-    }
-    stripe();
-  }, []);
-
   const handleSubmit = async (element: React.ChangeEvent<HTMLFormElement>) => {
     element.preventDefault();
 
     // handle payment request to the backend
-    console.log('Hi there');
+    const { stripe, elements } = props;
+    if (!stripe || !elements) {
+      return;
+    }
+
+    const card = elements.getElement(CardElement);
+
+    const result = await stripe.createToken(card);
+    if (result.error) {
+      console.log(result.error.message);
+    } else {
+      console.log(result.token);
+      // pass the token to your backend API
+    }
   };
 
   return (
     <div>
-      <p>
-        Welcome {fullName} to
-        <h2>ChronoStamp Certification Service</h2>
-      </p>
+      <div>
+        <p>
+          Welcome {fullName} to
+          <h2>ChronoStamp Certification Service</h2>
+        </p>
 
-      <img
-        src={picture}
-        alt={fullName}
-        width="100"
-        className="shadow rounded mb-2"
-      />
-
-      <Elements stripe={stripePromise}>
+        <img src={picture} alt={fullName} width="100" />
+      </div>
+      <div>
         <form
           onSubmit={(element: React.ChangeEvent<HTMLFormElement>) =>
             handleSubmit(element)
           }
         >
+          <input type="text" hidden name="Package1" value="10"></input>
           <CardElement />
           <button>Buy now!</button>
         </form>
-      </Elements>
-
-      <button onClick={() => Auth0.signOut()}>Log Out</button>
+      </div>
+      <div>
+        <button onClick={() => Auth0.signOut()}>Log Out</button>
+      </div>
     </div>
   );
 };
