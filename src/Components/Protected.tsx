@@ -30,6 +30,13 @@ const Protected: React.FC = () => {
     stripe();
   }, []);
 
+  const handleSubmit = async (element: React.ChangeEvent<HTMLFormElement>) => {
+    element.preventDefault();
+
+    // handle payment request to the backend
+    console.log('Hi there');
+  };
+
   return (
     <div>
       <p>
@@ -45,7 +52,14 @@ const Protected: React.FC = () => {
       />
 
       <Elements stripe={stripePromise}>
-        <CardElement />
+        <form
+          onSubmit={(element: React.ChangeEvent<HTMLFormElement>) =>
+            handleSubmit(element)
+          }
+        >
+          <CardElement />
+          <button>Buy now!</button>
+        </form>
       </Elements>
 
       <button onClick={() => Auth0.signOut()}>Log Out</button>
