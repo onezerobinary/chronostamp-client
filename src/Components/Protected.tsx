@@ -17,8 +17,13 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
   let sub = Auth0.profile.sub;
 
   // load the promise
-  const handleSubmit = async (element: React.ChangeEvent<HTMLFormElement>) => {
-    element.preventDefault();
+  const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const data = new FormData(event.target);
+    const pack = data.get('Pack1');
+
+    console.log(pack);
 
     // handle payment request to the backend
     const { stripe, elements } = props;
@@ -53,7 +58,8 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
             handleSubmit(element)
           }
         >
-          <input type="text" hidden name="Package1" value="10"></input>
+          <input type="text" id="Pack1" name="Pack1" value="10.00" hidden />
+
           <CardElement />
           <button>Buy now!</button>
         </form>
