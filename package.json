@@ -15,7 +15,9 @@
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "react-stripe-elements": "^6.1.2",
     "rxjs": "^6.5.5",
+    "stripe": "^8.56.0",
     "typescript": "~3.7.2"
   },
   "scripts": {
@@ -41,6 +43,8 @@
   },
   "devDependencies": {
     "@types/auth0-js": "^9.13.1",
-    "@types/react-router-dom": "^5.1.5"
+    "@types/react-router-dom": "^5.1.5",
+    "@types/react-stripe-elements": "^6.0.4",
+    "@types/stripe": "^7.13.23"
   }
 }
