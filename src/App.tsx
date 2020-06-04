@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
-import logo from './logo.svg';
-import './App.css';
 
 import auth0Client from './Auth/Auth';
 import { Route } from 'react-router-dom';
@@ -38,16 +36,13 @@ const App: React.FC<any> = (initialProps: any) => {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Route component={Public} path="/" exact />
-        <Route component={Callback} path="/callback" />
-        <SecuredRoute
-          path="/protected"
-          component={Protected}
-          checkingSession={checkingSession}
-        />
-      </header>
+      <Route component={Public} path="/" exact />
+      <Route component={Callback} path="/callback" />
+      <SecuredRoute
+        path="/protected"
+        component={Protected}
+        checkingSession={checkingSession}
+      />
     </div>
   );
 };
