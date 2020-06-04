@@ -2,7 +2,10 @@ import React from 'react';
 import Auth0 from '../Auth/Auth';
 import { CardElement } from '@stripe/react-stripe-js';
 import axios from 'axios';
+import styled from 'styled-components';
+
 import { BACKEND_URL, API } from '../Auth/config';
+import { Package } from './Package';
 
 interface IAppProps {
   stripe: any;
@@ -68,7 +71,7 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
   };
 
   return (
-    <div>
+    <Container>
       <div>
         <p>
           Welcome {fullName} to
@@ -77,23 +80,47 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
 
         <img src={picture} alt={fullName} width="100" />
       </div>
-      <div>
-        <form
-          onSubmit={(element: React.ChangeEvent<HTMLFormElement>) =>
-            handleSubmit(element)
-          }
-        >
-          <input type="text" id="Pack1" name="Pack1" value="10" hidden />
 
-          <CardElement />
-          <button>Buy now!</button>
-        </form>
-      </div>
+      <Packages>
+        <Package
+          title="Package 1"
+          amount="5.00 €"
+          stripe={props.stripe}
+          elements={props.elements}
+        />
+        <Package
+          title="Package 2"
+          amount="10.00 €"
+          stripe={props.stripe}
+          elements={props.elements}
+        />
+        <Package
+          title="Package 3"
+          amount="50.00 €"
+          stripe={props.stripe}
+          elements={props.elements}
+        />
+      </Packages>
       <div>
         <button onClick={() => Auth0.signOut()}>Log Out</button>
       </div>
-    </div>
+    </Container>
   );
 };
+
+const Container = styled.div({
+  background: '#282c34',
+  minHeight: '100vh',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'space-around',
+});
+
+const Packages = styled.div({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-around',
+});
 
 export default Protected;

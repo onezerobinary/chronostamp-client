@@ -23,7 +23,8 @@
     "rxjs": "^6.5.5",
     "stripe": "^8.56.0",
     "styled-components": "^5.1.1",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "use-react-modal": "^0.0.9"
   },
   "scripts": {
     "start": "react-scripts start",
