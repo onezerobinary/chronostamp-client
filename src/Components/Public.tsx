@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import Auth0 from '../Auth/Auth';
 
 import logo from '../logo.svg';
+import { NONAME } from 'dns';
 
 const Public: React.FC = () => {
   return (
@@ -13,7 +14,7 @@ const Public: React.FC = () => {
 
       <Title>ChronoStamp Service</Title>
 
-      <SubTitle>Declare the Truth of Something</SubTitle>
+      <SubTitle>"Declare the Truth of Something"</SubTitle>
       <Button onClick={() => Auth0.signIn()}>Log In</Button>
     </Content>
   );
@@ -54,9 +55,12 @@ const MyLogo = styled.img({
 const Button = styled.button({
   background: '#009ee3',
   borderRadius: 5,
+  border: 'none',
+  width: '100px',
+  fontSize: '10px',
   ':hover': {
-    borderRadius: 0,
-    background: '#00feef',
+    background: '#1c436a',
+    color: '#fff',
   },
 });
 
