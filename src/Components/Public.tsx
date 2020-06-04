@@ -3,7 +3,6 @@ import styled, { keyframes } from 'styled-components';
 import Auth0 from '../Auth/Auth';
 
 import logo from '../logo.svg';
-import { NONAME } from 'dns';
 
 const Public: React.FC = () => {
   return (
