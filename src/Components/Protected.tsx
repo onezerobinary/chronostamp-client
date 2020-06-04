@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import Auth0 from '../Auth/Auth';
-
-import { CardElement, ElementsConsumer } from '@stripe/react-stripe-js';
+import { CardElement } from '@stripe/react-stripe-js';
+import axios from 'axios';
+import { BACKEND_URL, API } from '../Auth/config';
 
 interface IAppProps {
   stripe: any;
@@ -38,8 +39,30 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
       console.log(result.error.message);
     } else {
       console.log(result.token);
-      // pass the token to your backend API
+
+      const data = JSON.stringify({
+        token: result.token,
+        amount: pack,
+        chronoStampID: nickname,
+      });
+
+      const URL = `${BACKEND_URL}${API}`;
+
+      let axiosConfig = {
+        mode: 'no-cors',
+        crossorigin: true,
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          'Access-Control-Allow-Origin': '*',
+        },
+      };
+
+      let response = await axios.post(URL, data, axiosConfig);
+
+      console.log(response);
     }
+
+    // redirect, clear inputs, thank alert ...
   };
 
   return (
@@ -58,7 +81,7 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
             handleSubmit(element)
           }
         >
-          <input type="text" id="Pack1" name="Pack1" value="10.00" hidden />
+          <input type="text" id="Pack1" name="Pack1" value="10" hidden />
 
           <CardElement />
           <button>Buy now!</button>
