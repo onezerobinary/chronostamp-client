@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Auth0 from '../Auth/Auth';
 import { CardElement } from '@stripe/react-stripe-js';
 import axios from 'axios';
@@ -16,6 +16,8 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
   let nickname = Auth0.profile.nickname;
   let picture = Auth0.profile.picture;
   let sub = Auth0.profile.sub;
+
+  console.log(sub);
 
   // load the promise
   const handleSubmit = async (event: React.ChangeEvent<HTMLFormElement>) => {
