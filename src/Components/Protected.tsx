@@ -3,6 +3,7 @@ import Auth0 from '../Auth/Auth';
 import styled from 'styled-components';
 
 import { Package } from './Package';
+import { useAppContext } from './AppContextProvider';
 
 interface IAppProps {
   stripe: any;
@@ -11,6 +12,10 @@ interface IAppProps {
 
 const Protected: React.FC<IAppProps> = (props: IAppProps) => {
   // console.log(Auth0.profile);
+
+  const [state, dispatch] = useAppContext();
+
+  let profile = state.profile;
 
   let fullName = Auth0.profile.name;
   let nickname = Auth0.profile.nickname;
@@ -24,8 +29,13 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
       <Menu>
         <Button onClick={() => Auth0.signOut()}>Log Out</Button>
         <FullName>{fullName}</FullName>
+
         <Profile src={picture} alt={fullName} />
       </Menu>
+      <div>
+        <p>{profile.account}</p>
+        <p>{profile.balance} ChronoStamps</p>
+      </div>
       <Title>ChronoStamp Certification Service</Title>
       <Packages>
         <Package
@@ -57,6 +67,8 @@ const Container = styled.div({
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'flex-start',
+  fontSize: '10px',
+  color: '#fff',
 });
 
 const Packages = styled.div({

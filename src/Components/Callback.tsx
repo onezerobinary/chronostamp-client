@@ -20,13 +20,7 @@ const Callback: React.FC = (props: any) => {
 
       //TODO: Check the user
       let id = Auth0.profile.nickname;
-
-      console.log(`Profile ID: ${id}`);
-
       let profile = await fetchProfile(id);
-
-      console.log(`Address from backend: ${profile.account}`);
-
       dispatchProfile(profile);
 
       props.history.replace('/protected');
@@ -40,7 +34,7 @@ const Callback: React.FC = (props: any) => {
 
     dispatch({
       type: ActionType.dispatchProfile,
-      payload: {},
+      payload: profile,
     });
   }
 

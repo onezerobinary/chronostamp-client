@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import useModal from 'use-react-modal';
 import { CardElement } from '@stripe/react-stripe-js';
-import axios from 'axios';
 import Auth0 from '../Auth/Auth';
-import { BACKEND_URL, API } from '../Auth/config';
+import { Payment, doPayment } from '../API';
 
 interface PackageProps {
   title: string;
@@ -38,31 +37,17 @@ export const Package: React.FC<PackageProps> = (props: PackageProps) => {
     if (result.error) {
       console.log(result.error.message);
     } else {
-      console.log(result.token);
-
-      const data = JSON.stringify({
+      const payment: Payment = {
         token: result.token,
         amount: props.amount,
         chronoStampID: nickname,
-      });
-
-      const URL = `${BACKEND_URL}${API}`;
-
-      let axiosConfig = {
-        mode: 'no-cors',
-        crossorigin: true,
-        headers: {
-          'Content-Type': 'application/json;charset=UTF-8',
-          'Access-Control-Allow-Origin': '*',
-        },
       };
 
-      let response = await axios.post(URL, data, axiosConfig);
+      let isPayed = doPayment(payment);
 
-      console.log(response);
+      console.log(isPayed);
 
-      // Check the result of the payment
-      if (response.data === 'Charged') {
+      if (isPayed) {
         setPayed(true);
       }
 
@@ -77,7 +62,7 @@ export const Package: React.FC<PackageProps> = (props: PackageProps) => {
       <Button onClick={openModal}>Buy now!</Button>
       {isOpen && (
         <Modal>
-          <Payment>
+          <PaymentContainer>
             <div className="Close">
               <ButtonClose onClick={closeModal}>x</ButtonClose>
             </div>
@@ -121,14 +106,14 @@ export const Package: React.FC<PackageProps> = (props: PackageProps) => {
                 <Description>Payment Successfully Received</Description>
               </Payed>
             )}
-          </Payment>
+          </PaymentContainer>
         </Modal>
       )}
     </Container>
   );
 };
 
-const Payment = styled.div({
+const PaymentContainer = styled.div({
   background: 'rgb(0, 0, 0, 0.2)',
   width: '350px',
   borderRadius: '6px',

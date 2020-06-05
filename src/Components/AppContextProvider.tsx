@@ -57,16 +57,12 @@ function loadFromLocalStorage(): InitialStateType {
 }
 
 function appReducer(state: InitialStateType, action: Action): InitialStateType {
-  console.log(`Hi there!`);
-
   switch (action.type) {
     case ActionType.dispatchProfile:
-      console.log(`Reducer called. ${action.payload}`);
-
       //Update State
       const newState = {
         profile: action.payload,
-        authenticated: state.authenticated,
+        authenticated: true,
       };
       return newState;
 
