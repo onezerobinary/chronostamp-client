@@ -75,44 +75,52 @@ export const Package: React.FC<PackageProps> = (props: PackageProps) => {
       <Title>{props.title}</Title>
       <Amount>{props.amount}</Amount>
       <Button onClick={openModal}>Buy now!</Button>
-      {isOpen && !payed && (
+      {isOpen && (
         <Modal>
           <Payment>
             <div className="Close">
               <ButtonClose onClick={closeModal}>x</ButtonClose>
             </div>
-            <Form>
-              <form
-                onSubmit={(element: React.ChangeEvent<HTMLFormElement>) =>
-                  handleSubmit(element)
-                }
-              >
-                <PaymentTitle>{props.title}</PaymentTitle>
-                <Amount>Amount: {props.amount}</Amount>
-                <Description>
-                  Please insert the details of your credit card
-                </Description>
-                <PaymentCard>
-                  <CardElement
-                    options={{
-                      style: {
-                        base: {
-                          fontSize: '10px',
-                          color: '#424770',
-                          '::placeholder': {
-                            color: '#aab7c4',
+            {!payed && (
+              <Form>
+                <form
+                  onSubmit={(element: React.ChangeEvent<HTMLFormElement>) =>
+                    handleSubmit(element)
+                  }
+                >
+                  <PaymentTitle>{props.title}</PaymentTitle>
+                  <Amount>Amount: {props.amount}</Amount>
+                  <Description>
+                    Please insert the details of your credit card
+                  </Description>
+                  <PaymentCard>
+                    <CardElement
+                      options={{
+                        style: {
+                          base: {
+                            fontSize: '10px',
+                            color: '#424770',
+                            '::placeholder': {
+                              color: '#aab7c4',
+                            },
+                          },
+                          invalid: {
+                            color: '#9e2146',
                           },
                         },
-                        invalid: {
-                          color: '#9e2146',
-                        },
-                      },
-                    }}
-                  />
-                </PaymentCard>
-                <Button>Send Payment</Button>
-              </form>
-            </Form>
+                      }}
+                    />
+                  </PaymentCard>
+                  <Button>Send Payment</Button>
+                </form>
+              </Form>
+            )}
+            {payed && (
+              <Payed>
+                <PaymentTitle>Thank you! 🚀</PaymentTitle>
+                <Description>Payment Successfully Received</Description>
+              </Payed>
+            )}
           </Payment>
         </Modal>
       )}
@@ -141,6 +149,10 @@ const Form = styled.div({
   borderRadius: '6px',
   paddingLeft: '8px',
   paddingRight: '8px',
+});
+
+const Payed = styled(Form)({
+  background: '#C6C36F',
 });
 
 const PaymentTitle = styled.div({
