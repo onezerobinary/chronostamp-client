@@ -11,7 +11,6 @@ import { ActionType } from '../Actions';
 import { Profile } from '../Model';
 
 const Callback: React.FC = (props: any) => {
-  // Substribe to todos state and access dispatch function
   const [state, dispatch] = useAppContext();
 
   useEffect(() => {

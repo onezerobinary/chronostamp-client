@@ -5,6 +5,10 @@ import { CardElement } from '@stripe/react-stripe-js';
 import Auth0 from '../Auth/Auth';
 import { Payment, doPayment } from '../API';
 
+import { useAppContext } from './AppContextProvider';
+import { ActionType } from '../Actions';
+import { Profile } from '../Model';
+
 interface PackageProps {
   title: string;
   amount: string;
@@ -13,6 +17,8 @@ interface PackageProps {
 }
 
 export const Package: React.FC<PackageProps> = (props: PackageProps) => {
+  const [state, dispatch] = useAppContext();
+
   let nickname = Auth0.profile.nickname;
   let sub = Auth0.profile.sub;
 
@@ -47,6 +53,21 @@ export const Package: React.FC<PackageProps> = (props: PackageProps) => {
 
       console.log(isPayed);
 
+      let new_amount = state.profile.balance + parseInt(props.amount) * 1000;
+      //Update balance
+      const profile: Profile = {
+        account: state.profile.account,
+        balance: new_amount,
+        chronoStampID: state.profile.chronoStampID,
+      };
+
+      console.log(`Dispatch Profile: ${profile.chronoStampID}`);
+
+      dispatch({
+        type: ActionType.dispatchProfile,
+        payload: profile,
+      });
+
       if (isPayed) {
         setPayed(true);
       }
@@ -54,6 +75,11 @@ export const Package: React.FC<PackageProps> = (props: PackageProps) => {
       // redirect, clear inputs, thank alert ...
     }
   };
+
+  function close() {
+    closeModal();
+    setPayed(false);
+  }
 
   return (
     <Container>
@@ -64,7 +90,7 @@ export const Package: React.FC<PackageProps> = (props: PackageProps) => {
         <Modal>
           <PaymentContainer>
             <div className="Close">
-              <ButtonClose onClick={closeModal}>x</ButtonClose>
+              <ButtonClose onClick={() => close()}>x</ButtonClose>
             </div>
             {!payed && (
               <Form>
