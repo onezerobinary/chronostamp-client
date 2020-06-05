@@ -9,6 +9,8 @@ import Callback from '../src/Components/Callback';
 import SecuredRoute from '../src/Components/SecuredRoute';
 import Protected from '../src/Components/Protected';
 
+import { AppContextProvider } from './Components/AppContextProvider';
+
 const App: React.FC<any> = (initialProps: any) => {
   const [checkingSession, setCheckingSession] = useState(
     initialProps.checkingSession
@@ -36,13 +38,15 @@ const App: React.FC<any> = (initialProps: any) => {
 
   return (
     <div className="App">
-      <Route component={Public} path="/" exact />
-      <Route component={Callback} path="/callback" />
-      <SecuredRoute
-        path="/protected"
-        component={Protected}
-        checkingSession={checkingSession}
-      />
+      <AppContextProvider>
+        <Route component={Public} path="/" exact />
+        <Route component={Callback} path="/callback" />
+        <SecuredRoute
+          path="/protected"
+          component={Protected}
+          checkingSession={checkingSession}
+        />
+      </AppContextProvider>
     </div>
   );
 };

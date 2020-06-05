@@ -1,17 +1,48 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
+
 import Auth0 from '../Auth/Auth';
 
+import { fetchProfile } from '../API';
+
+import { useAppContext } from './AppContextProvider';
+import { ActionType } from '../Actions';
+import { Profile } from '../Model';
+
 const Callback: React.FC = (props: any) => {
+  // Substribe to todos state and access dispatch function
+  const [state, dispatch] = useAppContext();
+
   useEffect(() => {
     async function auth() {
       await Auth0.handleAthentication();
+
+      //TODO: Check the user
+      let id = Auth0.profile.nickname;
+
+      console.log(`Profile ID: ${id}`);
+
+      let profile = await fetchProfile(id);
+
+      console.log(`Address from backend: ${profile.account}`);
+
+      dispatchProfile(profile);
+
       props.history.replace('/protected');
     }
 
     auth();
   }, []);
+
+  function dispatchProfile(profile: Profile): void {
+    console.log(`Dispatch Profile: ${profile.chronoStampID}`);
+
+    dispatch({
+      type: ActionType.dispatchProfile,
+      payload: {},
+    });
+  }
 
   return (
     <Content>
