@@ -16,15 +16,12 @@ class Auth {
 
   auth0 = new auth0.WebAuth(ChronoStampAuthConfig);
 
-  isAuthenticated(): boolean {
+  isAuthenticated(auth: boolean): boolean {
     console.log(`I'm called! > ${this.expiresAt}`);
+    console.log(`I'm called! > ${auth}`);
 
     // const isValid = new Date().getTime() < this.expiresAt;
-    const isValid = new Date().getTime() < new Date().getTime() + 1000;
-
-    console.log(`${isValid}`);
-
-    return isValid;
+    return auth;
   }
 
   signIn() {

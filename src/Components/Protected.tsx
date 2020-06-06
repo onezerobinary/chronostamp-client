@@ -19,6 +19,7 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
   let profile = state.profile;
 
   function signOut() {
+    Auth0.signOut();
     //TODO: Dispatch logout
     dispatch({
       type: ActionType.signOut,
