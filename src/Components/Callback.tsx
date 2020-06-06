@@ -16,10 +16,20 @@ const Callback: React.FC = (props: any) => {
   useEffect(() => {
     async function auth() {
       await Auth0.handleAthentication();
+
       //TODO: Check the user
-      let id = Auth0.profile.nickname;
-      let profile = await fetchProfile(id);
+      let tmpProfile: Profile = {
+        chronoStampID: Auth0.profile.nickname,
+        account: '',
+        balance: 0,
+        fullName: Auth0.profile.name,
+        sub: Auth0.profile.sub,
+        picture: Auth0.profile.picture,
+      };
+
+      let profile = await fetchProfile(tmpProfile);
       dispatchProfile(profile);
+
       props.history.replace('/protected');
     }
 
@@ -27,8 +37,6 @@ const Callback: React.FC = (props: any) => {
   }, []);
 
   function dispatchProfile(profile: Profile): void {
-    console.log(`Dispatch Profile: ${profile.chronoStampID}`);
-
     dispatch({
       type: ActionType.dispatchProfile,
       payload: profile,

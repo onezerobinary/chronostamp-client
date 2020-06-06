@@ -19,9 +19,6 @@ interface PackageProps {
 export const Package: React.FC<PackageProps> = (props: PackageProps) => {
   const [state, dispatch] = useAppContext();
 
-  let nickname = Auth0.profile.nickname;
-  let sub = Auth0.profile.sub;
-
   // Declare a local state to used internally by this component
   const [payed, setPayed] = useState(false);
 
@@ -46,7 +43,7 @@ export const Package: React.FC<PackageProps> = (props: PackageProps) => {
       const payment: Payment = {
         token: result.token,
         amount: props.amount,
-        chronoStampID: nickname,
+        profile: state.profile,
       };
 
       let updatedProfile = await doPayment(payment);

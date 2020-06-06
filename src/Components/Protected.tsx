@@ -18,13 +18,6 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
 
   let profile = state.profile;
 
-  let fullName = Auth0.profile.name;
-  let nickname = Auth0.profile.nickname;
-  let picture = Auth0.profile.picture;
-  let sub = Auth0.profile.sub;
-
-  console.log(sub);
-
   function signOut() {
     //TODO: Dispatch logout
     dispatch({
@@ -37,9 +30,9 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
     <Container>
       <Menu>
         <Button onClick={() => signOut()}>Log Out</Button>
-        <FullName>{fullName}</FullName>
+        <FullName>{profile.fullName}</FullName>
 
-        <Profile src={picture} alt={fullName} />
+        <Profile src={profile.picture} alt={profile.fullName} />
       </Menu>
       <div>
         <p>{profile.account}</p>

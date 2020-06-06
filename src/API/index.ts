@@ -11,7 +11,7 @@ import { Profile } from '../Model';
 export type Payment = {
   token: string;
   amount: string;
-  chronoStampID: string;
+  profile: Profile;
 };
 
 function Eur2ChronoStamp(amount: string): number {
@@ -27,14 +27,12 @@ const axiosConfig = {
   },
 };
 
-export async function fetchProfile(id: string): Promise<Profile> {
+export async function fetchProfile(tmpProfile: Profile): Promise<Profile> {
   return new Promise(async (resolve, reject) => {
     try {
       const URL = `${BACKEND_URL}${PROFILE}`;
 
-      const data = JSON.stringify({
-        chronoStampID: id,
-      });
+      const data = JSON.stringify(tmpProfile);
 
       let result = await axios.post(URL, data, axiosConfig);
       let profile: Profile = result.data;
@@ -77,7 +75,7 @@ export async function doPayment(payment: Payment): Promise<Profile> {
       }
 
       // Update info
-      let profile = await fetchProfile(payment.chronoStampID);
+      let profile = await fetchProfile(payment.profile);
 
       let newBalance = profile.balance + Eur2ChronoStamp(payment.amount);
       profile.balance = newBalance;
