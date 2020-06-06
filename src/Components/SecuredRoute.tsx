@@ -1,13 +1,15 @@
 import React from 'react';
 import { Route, withRouter } from 'react-router-dom';
-import Auth0 from '../Auth/Auth';
-
 import { Elements, ElementsConsumer } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { STRIPE_PUBLISHABLE_KEY } from '../Auth/config';
+import Auth0 from '../Auth/Auth';
+import { useAppContext } from './AppContextProvider';
 
 function SecuredRoute(props: any) {
   const { component: Component, path, checkingSession } = props;
+
+  const [state, dispatch] = useAppContext();
 
   const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 

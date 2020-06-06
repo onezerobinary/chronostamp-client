@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { Package } from './Package';
 import { useAppContext } from './AppContextProvider';
+import { ActionType } from '../Actions';
 
 interface IAppProps {
   stripe: any;
@@ -24,10 +25,18 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
 
   console.log(sub);
 
+  function signOut() {
+    //TODO: Dispatch logout
+    dispatch({
+      type: ActionType.signOut,
+      payload: false,
+    });
+  }
+
   return (
     <Container>
       <Menu>
-        <Button onClick={() => Auth0.signOut()}>Log Out</Button>
+        <Button onClick={() => signOut()}>Log Out</Button>
         <FullName>{fullName}</FullName>
 
         <Profile src={picture} alt={fullName} />

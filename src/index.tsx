@@ -6,13 +6,13 @@ import * as serviceWorker from './serviceWorker';
 
 import { BrowserRouter } from 'react-router-dom';
 
-export type Props = {
+export type AppProps = {
   component?: Component;
   path?: string;
   checkingSession: boolean;
 };
 
-const initialProps: Props = {
+const initialProps: AppProps = {
   checkingSession: true,
 };
 

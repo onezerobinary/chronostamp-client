@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { BACKEND_URL, PROFILE, API } from '../Auth/config';
+import {
+  BACKEND_URL,
+  PROFILE,
+  API,
+  UPDATE,
+  CHRONOSTAMP_VALUE,
+} from '../Auth/config';
 import { Profile } from '../Model';
 
 export type Payment = {
@@ -7,6 +13,10 @@ export type Payment = {
   amount: string;
   chronoStampID: string;
 };
+
+function Eur2ChronoStamp(amount: string): number {
+  return parseInt(amount) / CHRONOSTAMP_VALUE;
+}
 
 const axiosConfig = {
   mode: 'no-cors',
@@ -36,7 +46,23 @@ export async function fetchProfile(id: string): Promise<Profile> {
   });
 }
 
-export async function doPayment(payment: Payment): Promise<boolean> {
+export async function updateProfile(profile: Profile): Promise<boolean> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const URL = `${BACKEND_URL}${UPDATE}`;
+
+      const data = JSON.stringify(profile);
+
+      let isUpdated = await axios.post(URL, data, axiosConfig);
+
+      resolve(isUpdated.data);
+    } catch (err) {
+      reject(`It was not possible to update the Profile. ${err}`);
+    }
+  });
+}
+
+export async function doPayment(payment: Payment): Promise<Profile> {
   return new Promise(async (resolve, reject) => {
     try {
       const URL = `${BACKEND_URL}${API}`;
@@ -45,14 +71,24 @@ export async function doPayment(payment: Payment): Promise<boolean> {
 
       let response = await axios.post(URL, data, axiosConfig);
 
-      console.log(response);
-
       // Check the result of the payment
       if (response.data !== 'Charged') {
         reject(`It was not possible to perform the payment`);
       }
 
-      resolve(true);
+      // Update info
+      let profile = await fetchProfile(payment.chronoStampID);
+
+      let newBalance = profile.balance + Eur2ChronoStamp(payment.amount);
+      profile.balance = newBalance;
+
+      let isUpdated = await updateProfile(profile);
+
+      if (isUpdated) {
+        resolve(profile);
+      }
+
+      reject(`It was not possible to update the payment to the account.`);
     } catch (err) {
       reject(`It was not possible to perform the payment. ${err}`);
     }

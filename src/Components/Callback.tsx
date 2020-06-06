@@ -16,12 +16,10 @@ const Callback: React.FC = (props: any) => {
   useEffect(() => {
     async function auth() {
       await Auth0.handleAthentication();
-
       //TODO: Check the user
       let id = Auth0.profile.nickname;
       let profile = await fetchProfile(id);
       dispatchProfile(profile);
-
       props.history.replace('/protected');
     }
 

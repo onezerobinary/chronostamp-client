@@ -10,6 +10,7 @@ import { useDebounce } from 'use-debounce';
 
 import { Profile } from '../Model';
 import { Action, ActionType } from '../Actions';
+import Auth0 from '../Auth/Auth';
 
 const profile: Profile = {
   chronoStampID: '',
@@ -45,7 +46,7 @@ function saveToLocalStorage(state: InitialStateType) {
   }
 }
 
-function loadFromLocalStorage(): InitialStateType {
+export function loadFromLocalStorage(): InitialStateType {
   let result: InitialStateType = initialState;
 
   const data = localStorage.getItem('ChronoStampData');
@@ -65,6 +66,16 @@ function appReducer(state: InitialStateType, action: Action): InitialStateType {
         authenticated: true,
       };
       return newState;
+
+    case ActionType.signOut:
+      const signOutState = {
+        profile: initialState.profile,
+        authenticated: action.payload,
+      };
+      //call the sigOut from Auth 0
+      Auth0.signOut();
+
+      return signOutState;
 
     default:
       return state;

@@ -49,30 +49,15 @@ export const Package: React.FC<PackageProps> = (props: PackageProps) => {
         chronoStampID: nickname,
       };
 
-      let isPayed = doPayment(payment);
+      let updatedProfile = await doPayment(payment);
 
-      console.log(isPayed);
-
-      let new_amount = state.profile.balance + parseInt(props.amount) * 1000;
-      //Update balance
-      const profile: Profile = {
-        account: state.profile.account,
-        balance: new_amount,
-        chronoStampID: state.profile.chronoStampID,
-      };
-
-      console.log(`Dispatch Profile: ${profile.chronoStampID}`);
-
+      // Update State
       dispatch({
         type: ActionType.dispatchProfile,
-        payload: profile,
+        payload: updatedProfile,
       });
 
-      if (isPayed) {
-        setPayed(true);
-      }
-
-      // redirect, clear inputs, thank alert ...
+      setPayed(true);
     }
   };
 
