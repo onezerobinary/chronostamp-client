@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { Package } from './Package';
 import { useAppContext } from './AppContextProvider';
 import { ActionType } from '../Actions';
+import { AppTabs } from './AppTabs';
 
 interface IAppProps {
   stripe: any;
@@ -39,6 +40,7 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
           <Profile src={profile.picture ? profile.picture : ''} />
         </MenuRight>
       </Menu>
+      <AppTabs />
       <div>
         <p>{profile.account}</p>
         <p>{profile.balance} ChronoStamps</p>
