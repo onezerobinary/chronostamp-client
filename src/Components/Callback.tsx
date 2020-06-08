@@ -22,9 +22,9 @@ const Callback: React.FC = (props: any) => {
         chronoStampID: Auth0.profile.nickname,
         account: '',
         balance: 0,
-        fullName: Auth0.profile.name,
+        fullName: Auth0.profile.name || '',
         sub: Auth0.profile.sub,
-        picture: Auth0.profile.picture,
+        picture: Auth0.profile.picture || '',
       };
 
       let profile = await fetchProfile(tmpProfile);

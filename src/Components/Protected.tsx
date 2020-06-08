@@ -30,10 +30,14 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
   return (
     <Container>
       <Menu>
-        <Button onClick={() => signOut()}>Log Out</Button>
-        <FullName>{profile.fullName}</FullName>
-
-        <Profile src={profile.picture} alt={profile.fullName} />
+        <MenuLeft>
+          <AppTitle>ChronoStamp</AppTitle>
+        </MenuLeft>
+        <MenuRight>
+          <Button onClick={() => signOut()}>Log Out</Button>
+          <FullName>{profile.fullName}</FullName>
+          <Profile src={profile.picture ? profile.picture : ''} />
+        </MenuRight>
       </Menu>
       <div>
         <p>{profile.account}</p>
@@ -85,9 +89,34 @@ const Menu = styled.div({
   display: 'flex',
   flexDirection: 'row',
   alignItems: 'center',
+  justifyContent: 'space-between',
+  background: '#232323',
+  height: '14vh',
+  boxShadow: '0px 1px 6px 1px rgba(0,0,0,1)',
+});
+
+const MenuLeft = styled.div({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+});
+
+const AppTitle = styled.div({
+  marginLeft: '8px',
+  fontSize: '12px',
+  fontFamily: 'Avenir Book',
+  transition: 'transform 300ms ease-in-out',
+  ':hover': {
+    transform: 'translate(5px, 0px) rotate(360deg)',
+  },
+});
+
+const MenuRight = styled.div({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
   justifyContent: 'flex-end',
-  marginTop: '10px',
-  marginRight: '10px',
 });
 
 const Title = styled.div({
@@ -104,11 +133,13 @@ const Title = styled.div({
 
 const Profile = styled.img({
   height: '38px',
+  width: '38px',
   borderRadius: '38px',
   padding: '1px',
   border: '1px solid #009ee3',
   background: '#282c34',
   marginLeft: '10px',
+  marginRight: '6px',
 });
 
 const FullName = styled.div({

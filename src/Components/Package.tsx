@@ -170,7 +170,7 @@ const Container = styled.div({
   background: '#cd495a',
   width: '120px',
   height: '100px',
-  borderRadius: '5px',
+  borderRadius: '10px',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
