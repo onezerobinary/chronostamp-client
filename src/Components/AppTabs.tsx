@@ -1,4 +1,5 @@
 import React from 'react';
+import { Tab, Tabs } from 'react-tabs';
 
 const AppTabs: React.FC = () => {
   return (
