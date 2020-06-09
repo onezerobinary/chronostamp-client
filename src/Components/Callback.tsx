@@ -9,6 +9,7 @@ import { fetchProfile } from '../API';
 import { useAppContext } from './AppContextProvider';
 import { ActionType } from '../Actions';
 import { Profile } from '../Model';
+import { TabsType } from './AppTabs';
 
 const Callback: React.FC = (props: any) => {
   const [state, dispatch] = useAppContext();
@@ -24,7 +25,9 @@ const Callback: React.FC = (props: any) => {
         balance: 0,
         fullName: Auth0.profile.name || '',
         sub: Auth0.profile.sub,
-        picture: Auth0.profile.picture || '',
+        picture:
+          Auth0.profile.picture || 'https://onezerobinary.com/logoSquare.png',
+        tab: TabsType.wallet,
       };
 
       let profile = await fetchProfile(tmpProfile);

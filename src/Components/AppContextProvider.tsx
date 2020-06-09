@@ -11,11 +11,13 @@ import { useDebounce } from 'use-debounce';
 import { Profile } from '../Model';
 import { Action, ActionType } from '../Actions';
 import Auth0 from '../Auth/Auth';
+import { TabsType } from './AppTabs';
 
 const profile: Profile = {
   chronoStampID: '',
   account: '',
   balance: 0,
+  tab: TabsType.wallet,
 };
 
 export interface InitialStateType {
@@ -76,6 +78,16 @@ function appReducer(state: InitialStateType, action: Action): InitialStateType {
       Auth0.signOut();
 
       return signOutState;
+
+    case ActionType.setTab:
+      console.log(action.payload);
+
+      const setTabState = {
+        profile: action.payload,
+        authenticated: true,
+      };
+
+      return setTabState;
 
     default:
       return state;
