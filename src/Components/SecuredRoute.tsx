@@ -1,8 +1,5 @@
 import React from 'react';
 import { Route, withRouter } from 'react-router-dom';
-import { Elements, ElementsConsumer } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
-import { STRIPE_PUBLISHABLE_KEY } from '../Auth/config';
 import styled from 'styled-components';
 import Auth0 from '../Auth/Auth';
 

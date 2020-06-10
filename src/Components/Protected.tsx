@@ -12,8 +12,6 @@ import { AppTabs, TabsType } from './AppTabs';
 import { Wallet } from './Wallet';
 
 const Protected: React.FC = () => {
-  // console.log(Auth0.profile);
-
   const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
   const [state, dispatch] = useAppContext();
@@ -23,7 +21,6 @@ const Protected: React.FC = () => {
   const [searchMenu, setSearchMenu] = useState(false);
 
   let profile = state.profile;
-
   let selTab = profile.tab;
 
   useEffect(() => {
@@ -32,7 +29,6 @@ const Protected: React.FC = () => {
 
   function signOut() {
     Auth0.signOut();
-    //TODO: Dispatch logout
     dispatch({
       type: ActionType.signOut,
       payload: false,
@@ -40,8 +36,6 @@ const Protected: React.FC = () => {
   }
 
   function isAllowed(): void {
-    console.log(`foo######################################### ${walletMenu}`);
-
     switch (selTab) {
       case TabsType.wallet:
         setWalletMenu(true);
@@ -98,13 +92,6 @@ const Container = styled.div({
   justifyContent: 'flex-start',
   fontSize: '10px',
   color: '#fff',
-});
-
-const Packages = styled.div({
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-around',
 });
 
 const Menu = styled.div({
