@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Auth0 from '../Auth/Auth';
 import styled from 'styled-components';
 
 import { Package } from './Package';
 import { useAppContext } from './AppContextProvider';
 import { ActionType } from '../Actions';
-import { AppTabs } from './AppTabs';
+import { AppTabs, TabsType } from './AppTabs';
+import { Wallet } from './Wallet';
 
 interface IAppProps {
   stripe: any;
@@ -17,7 +18,17 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
 
   const [state, dispatch] = useAppContext();
 
+  const [walletMenu, setWalletMenu] = useState(false);
+  const [assetsMenu, setAssetsMenu] = useState(false);
+  const [searchMenu, setSearchMenu] = useState(false);
+
   let profile = state.profile;
+
+  let selTab = profile.tab;
+
+  useEffect(() => {
+    isAllowed();
+  }, [state]);
 
   function signOut() {
     Auth0.signOut();
@@ -26,6 +37,34 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
       type: ActionType.signOut,
       payload: false,
     });
+  }
+
+  function isAllowed(): void {
+    console.log(`foo######################################### ${walletMenu}`);
+
+    switch (selTab) {
+      case TabsType.wallet:
+        setWalletMenu(true);
+        setAssetsMenu(false);
+        setSearchMenu(false);
+        break;
+      case TabsType.assets:
+        setWalletMenu(false);
+        setAssetsMenu(true);
+        setSearchMenu(false);
+        break;
+      case TabsType.search:
+        setWalletMenu(false);
+        setAssetsMenu(false);
+        setSearchMenu(true);
+        break;
+    }
+
+    // if (selTab === TabsType.wallet) {
+    //   setWalletMenu(true);
+    // } else {
+    //   setWalletMenu(false);
+    // }
   }
 
   return (
@@ -40,12 +79,11 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
           <Profile src={profile.picture ? profile.picture : ''} />
         </MenuRight>
       </Menu>
-      <AppTabs />
-      <div>
-        <p>{profile.account}</p>
-        <p>{profile.balance} ChronoStamps</p>
-      </div>
       <Title>ChronoStamp Certification Service</Title>
+      <AppTabs />
+      {walletMenu && <Wallet />}
+      {assetsMenu && <div>Asset Menu ...</div>}
+      {searchMenu && <div>Search Menu ...</div>}
       <Packages>
         <Package
           title="Package 1"
@@ -129,8 +167,8 @@ const Title = styled.div({
   fontSize: '14px',
   color: '#fff',
   fontFamily: 'Avenir Book',
-  marginTop: '15px',
-  marginBottom: '45px',
+  marginTop: '2vh',
+  marginBottom: '1vh',
 });
 
 const Profile = styled.img({

@@ -19,7 +19,6 @@ export const AppTabs: React.FC = () => {
   function handleTab(param: TabsType) {
     let profile = state.profile;
     profile.tab = param;
-
     setTab(param);
 
     dispatch({
@@ -73,7 +72,7 @@ const Container = styled.div({
   fontSize: '14px',
   color: '#fff',
   fontFamily: 'Avenir Book',
-  marginTop: '3vh',
+  marginTop: '1vh',
 });
 
 const Button = styled.button({
