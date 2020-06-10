@@ -2,16 +2,14 @@ import React from 'react';
 import { Route, withRouter } from 'react-router-dom';
 import { Elements, ElementsConsumer } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import styled from 'styled-components';
 import { STRIPE_PUBLISHABLE_KEY } from '../Auth/config';
+import styled from 'styled-components';
 import Auth0 from '../Auth/Auth';
 
 import { useAppContext } from './AppContextProvider';
 
 function SecuredRoute(props: any) {
   const { component: Component, path } = props;
-
-  const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
   const [state, dispatch] = useAppContext();
 
@@ -30,15 +28,7 @@ function SecuredRoute(props: any) {
           Auth0.signIn();
           return <div></div>;
         }
-        return (
-          <Elements stripe={stripePromise}>
-            <ElementsConsumer>
-              {({ elements, stripe }) => (
-                <Component elements={elements} stripe={stripe} />
-              )}
-            </ElementsConsumer>
-          </Elements>
-        );
+        return <Component />;
       }}
     />
   );

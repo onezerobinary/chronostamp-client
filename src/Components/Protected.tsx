@@ -2,19 +2,19 @@ import React, { useEffect, useState } from 'react';
 import Auth0 from '../Auth/Auth';
 import styled from 'styled-components';
 
-import { Package } from './Package';
+import { Elements, ElementsConsumer } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import { STRIPE_PUBLISHABLE_KEY } from '../Auth/config';
+
 import { useAppContext } from './AppContextProvider';
 import { ActionType } from '../Actions';
 import { AppTabs, TabsType } from './AppTabs';
 import { Wallet } from './Wallet';
 
-interface IAppProps {
-  stripe: any;
-  elements: any;
-}
-
-const Protected: React.FC<IAppProps> = (props: IAppProps) => {
+const Protected: React.FC = () => {
   // console.log(Auth0.profile);
+
+  const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
 
   const [state, dispatch] = useAppContext();
 
@@ -59,12 +59,6 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
         setSearchMenu(true);
         break;
     }
-
-    // if (selTab === TabsType.wallet) {
-    //   setWalletMenu(true);
-    // } else {
-    //   setWalletMenu(false);
-    // }
   }
 
   return (
@@ -81,29 +75,17 @@ const Protected: React.FC<IAppProps> = (props: IAppProps) => {
       </Menu>
       <Title>ChronoStamp Certification Service</Title>
       <AppTabs />
-      {walletMenu && <Wallet />}
+      {walletMenu && (
+        <Elements stripe={stripePromise}>
+          <ElementsConsumer>
+            {({ elements, stripe }) => (
+              <Wallet elements={elements} stripe={stripe} />
+            )}
+          </ElementsConsumer>
+        </Elements>
+      )}
       {assetsMenu && <div>Asset Menu ...</div>}
       {searchMenu && <div>Search Menu ...</div>}
-      <Packages>
-        <Package
-          title="Package 1"
-          amount="5.00 €"
-          stripe={props.stripe}
-          elements={props.elements}
-        />
-        <Package
-          title="Package 2"
-          amount="10.00 €"
-          stripe={props.stripe}
-          elements={props.elements}
-        />
-        <Package
-          title="Package 3"
-          amount="50.00 €"
-          stripe={props.stripe}
-          elements={props.elements}
-        />
-      </Packages>
     </Container>
   );
 };
