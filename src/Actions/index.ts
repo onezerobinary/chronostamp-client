@@ -2,6 +2,7 @@ export enum ActionType {
   dispatchProfile = 'DISPATCH_PROFILE',
   signOut = 'SIGNOUT',
   setTab = 'SETTAB',
+  account = 'ACCOUNT',
 }
 
 export type Action = {

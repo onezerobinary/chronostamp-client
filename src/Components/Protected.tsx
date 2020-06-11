@@ -10,6 +10,7 @@ import { useAppContext } from './AppContextProvider';
 import { ActionType } from '../Actions';
 import { AppTabs, TabsType } from './AppTabs';
 import { Wallet } from './Wallet';
+import { Assets } from './Assets';
 
 const Protected: React.FC = () => {
   const stripePromise = loadStripe(STRIPE_PUBLISHABLE_KEY);
@@ -67,7 +68,7 @@ const Protected: React.FC = () => {
           <Profile src={profile.picture ? profile.picture : ''} />
         </MenuRight>
       </Menu>
-      <Title>ChronoStamp Certification Service</Title>
+      <Title>ChronoStamp Service</Title>
       <AppTabs />
       {walletMenu && (
         <Elements stripe={stripePromise}>
@@ -78,7 +79,7 @@ const Protected: React.FC = () => {
           </ElementsConsumer>
         </Elements>
       )}
-      {assetsMenu && <div>Asset Menu ...</div>}
+      {assetsMenu && <Assets />}
       {searchMenu && <div>Search Menu ...</div>}
     </Container>
   );
@@ -99,7 +100,7 @@ const Menu = styled.div({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-between',
-  background: '#232323',
+  background: '#1c436a',
   height: '14vh',
   boxShadow: '0px 1px 6px 1px rgba(0,0,0,1)',
 });
@@ -136,8 +137,8 @@ const Title = styled.div({
   fontSize: '14px',
   color: '#fff',
   fontFamily: 'Avenir Book',
-  marginTop: '2vh',
-  marginBottom: '1vh',
+  marginTop: '4vh',
+  marginBottom: '2vh',
 });
 
 const Profile = styled.img({

@@ -3,6 +3,9 @@ import { useAppContext } from './AppContextProvider';
 import styled from 'styled-components';
 import { Package } from './Package';
 
+import { fetchAccount } from '../API';
+import { ActionType } from '../Actions';
+
 interface IAppProps {
   stripe: any;
   elements: any;
@@ -16,29 +19,48 @@ export const Wallet: React.FC<IAppProps> = (info: IAppProps) => {
 
   useEffect(() => {
     checkAccount();
-  }, []);
+  }, [state]);
 
   const [enablePayments, setEnablePayements] = useState(false);
 
   const checkAccount = () => {
     if (account === '') {
-      //TODO: create an account
-      //TODO: update State an account
       console.log(`Account must be created`);
       setEnablePayements(false);
     } else {
       setEnablePayements(true);
-      console.log(`${account}`);
     }
   };
 
+  async function createAccount() {
+    let fetchedProfile = await fetchAccount(profile);
+
+    dispatch({
+      type: ActionType.account,
+      payload: fetchedProfile,
+    });
+  }
+
   return (
     <div>
-      {!enablePayments && <>Create Account</>}
+      {!enablePayments && (
+        <NewAccount>
+          <Button onClick={() => createAccount()}>Create New Account</Button>
+          <p>
+            Yuo will receive an email with the recovery words that will allow
+            you to generate the private key.
+          </p>
+        </NewAccount>
+      )}
       {enablePayments && (
         <>
-          <p>Account: {profile.account}</p>
-          <p>Balance: {profile.balance} ChronoStamps</p>
+          <AccountInfo>
+            <AccountInfoLeft>Account: {profile.account}</AccountInfoLeft>
+            <AccountInfoRight>
+              Balance: {profile.balance} ChronoStamps
+            </AccountInfoRight>
+          </AccountInfo>
+
           <Packages>
             <Package
               title="Package 1"
@@ -70,4 +92,53 @@ const Packages = styled.div({
   flexDirection: 'row',
   alignItems: 'center',
   justifyContent: 'space-around',
+});
+
+const NewAccount = styled.div({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  minHeight: '60vh',
+});
+
+const AccountInfo = styled.div({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  marginTop: '2vh',
+  marginBottom: '4vh',
+});
+
+const AccountInfoLeft = styled.div({
+  marginLeft: '6px',
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+  fontSize: '8px',
+  fontFamily: 'Avenir Book',
+});
+
+const AccountInfoRight = styled.div({
+  marginRight: '6px',
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'flex-end',
+  fontSize: '8px',
+  fontFamily: 'Avenir Book',
+});
+
+const Button = styled.button({
+  background: '#009ee3',
+  borderRadius: 5,
+  border: 'none',
+  width: '120px',
+  fontSize: '10px',
+  ':hover': {
+    background: '#1c436a',
+    color: '#fff',
+  },
 });

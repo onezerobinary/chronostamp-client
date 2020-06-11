@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -21,6 +21,7 @@ const Callback: React.FC = (props: any) => {
       //TODO: Check the user
       let tmpProfile: Profile = {
         chronoStampID: Auth0.profile.nickname,
+        email: Auth0.profile.email,
         account: '',
         balance: 0,
         fullName: Auth0.profile.name || '',

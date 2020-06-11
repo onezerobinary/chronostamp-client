@@ -5,6 +5,8 @@ import {
   API,
   UPDATE,
   CHRONOSTAMP_VALUE,
+  ACCOUNT,
+  API_ASSET,
 } from '../Auth/config';
 import { Profile } from '../Model';
 
@@ -26,6 +28,51 @@ const axiosConfig = {
     'Access-Control-Allow-Origin': '*',
   },
 };
+
+const axiosAssetConfig = {
+  mode: 'no-cors',
+  crossorigin: true,
+  headers: {
+    // 'Content-Type': 'multipart/form-data',
+    'Access-Control-Allow-Origin': '*',
+  },
+};
+
+export async function sendAsset(formData: FormData): Promise<Profile> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const URL = `${BACKEND_URL}${API_ASSET}`;
+
+      console.log(`Data ${formData}`);
+
+      console.log(formData);
+
+      let result = await axios.post(URL, formData, axiosAssetConfig);
+      let profile: Profile = result.data;
+
+      resolve(profile);
+    } catch (err) {
+      reject(`It was not possible to get the Profile. ${err}`);
+    }
+  });
+}
+
+export async function fetchAccount(tmpProfile: Profile): Promise<Profile> {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const URL = `${BACKEND_URL}${ACCOUNT}`;
+
+      const data = JSON.stringify(tmpProfile);
+
+      let result = await axios.post(URL, data, axiosConfig);
+      let profile: Profile = result.data;
+
+      resolve(profile);
+    } catch (err) {
+      reject(`It was not possible to get the Profile. ${err}`);
+    }
+  });
+}
 
 export async function fetchProfile(tmpProfile: Profile): Promise<Profile> {
   return new Promise(async (resolve, reject) => {

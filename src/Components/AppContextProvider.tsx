@@ -15,6 +15,7 @@ import { TabsType } from './AppTabs';
 
 const profile: Profile = {
   chronoStampID: '',
+  email: '',
   account: '',
   balance: 0,
   tab: TabsType.wallet,
@@ -80,14 +81,20 @@ function appReducer(state: InitialStateType, action: Action): InitialStateType {
       return signOutState;
 
     case ActionType.setTab:
-      console.log(action.payload);
-
       const setTabState = {
         profile: action.payload,
         authenticated: true,
       };
 
       return setTabState;
+
+    case ActionType.account:
+      const accountState = {
+        profile: action.payload,
+        authenticated: true,
+      };
+
+      return accountState;
 
     default:
       return state;
